@@ -29,7 +29,8 @@ setup(
     url='https://github.com/F5Networks/f5-common-python',
     keywords=['F5', 'sdk', 'api', 'icontrol', 'bigip', 'api', 'ltm'],
     packages=find_packages(),
-    install_requires=["pytest"],
+    install_requires=["pytest>=3, <4",
+                      "f5-sdk>=2.2.2, <3"],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: Apache Software License',
