@@ -14,12 +14,13 @@
 #
 import pytest
 
+from f5.sdk_exception import UnsupportedOperation
 from f5.bigip import BigIP
 from f5.bigip import ManagementRoot
 
 from .utils import registrytools
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='module', autouse=False)
 def setup_device_snapshot(request, mgmt_root):
     '''Snapshot the device to manage objects created by tests.
 
@@ -60,47 +61,47 @@ def pytest_addoption(parser):
                      help="IP address of VCMP enabled host.")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_bigip(request):
     return request.config.getoption("--bigip")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_username(request):
     return request.config.getoption("--username")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_password(request):
     return request.config.getoption("--password")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_port(request):
     return request.config.getoption("--port")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_token(request):
     return request.config.getoption("--token")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_vcmp_host(request):
     return request.config.getoption("--vcmp-host")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def opt_release(request):
     return request.config.getoption("--release")
 
 
-@pytest.fixture
+@pytest.fixture(autouse=False)
 def opt_peer(request):
     return request.config.getoption("--peer")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=False)
 def mgmt_root(opt_bigip, opt_username, opt_password, opt_port, opt_token):
     '''bigip fixture'''
     try:
@@ -121,12 +122,12 @@ def mgmt_root(opt_bigip, opt_username, opt_password, opt_port, opt_token):
 
 
 @pytest.fixture
-def bigip(mgmt_root):
+def bigip(mgmt_root, autouse=False):
     '''bigip fixture'''
     return mgmt_root.tm
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='module', autouse=False)
 def vcmp_host(opt_vcmp_host, opt_username, opt_password, opt_port):
     '''vcmp fixture'''
     m = ManagementRoot(
@@ -134,7 +135,7 @@ def vcmp_host(opt_vcmp_host, opt_username, opt_password, opt_port):
     return m
 
 
-@pytest.fixture
+@pytest.fixture(autouse=False)
 def peer(opt_peer, opt_username, opt_password, scope="module"):
     '''peer bigip fixture'''
     p = BigIP(opt_peer, opt_username, opt_password)
